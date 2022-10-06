@@ -58,11 +58,34 @@ namespace Cars.Controllers
             return _Db.Manufactures.FirstOrDefault(Manufacture => Manufacture.Id == id);
         }
 
+        [HttpGet("manufactureCompany")]
+        public Manufacture GetManufactureByCompany(string company)
+        {
+            return _Db.Manufactures.FirstOrDefault(Manufacture => Manufacture.Company.ToLower() == company.ToLower());
+        }
+
+        [HttpGet("manufactureCountry")]
+        public Manufacture GetManufactureByCountry(string country)
+        {
+            return _Db.Manufactures.FirstOrDefault(Manufacture => Manufacture.Country.ToLower() == country.ToLower());
+        }
 
         [HttpGet("carId")]
         public Car GetCarById(int id)
         {
             return _Db.Cars.FirstOrDefault(Car => Car.Id == id);
+        }
+
+        [HttpGet("carMake")]
+        public IActionResult GetCarByMake(string company)
+        {
+            return Ok(_Db.Cars.Where(Car => Car.Make.Company.ToLower() == company.ToLower()));
+        }
+
+        [HttpGet("carModel")]
+        public IActionResult GetCarByModel(string model)
+        {
+            return Ok(_Db.Cars.Where(Car => Car.Model.ToLower() == model.ToLower()));
         }
 
         [HttpPut("updateManufacture")]
@@ -100,6 +123,15 @@ namespace Cars.Controllers
         {
             _Db.Cars.Remove(_Db.Cars.FirstOrDefault(Car => Car.Id == id));
             _Db.SaveChanges();
+        }
+
+        [HttpPatch("updateManufactureCountry")]
+        public Manufacture UpdateManufactureCountry(int id, string country)
+        {
+            Manufacture m = _Db.Manufactures.FirstOrDefault(Manufacture => Manufacture.Id == id);
+            m.Country = country;
+            _Db.SaveChanges();
+            return m;
         }
     }
 }

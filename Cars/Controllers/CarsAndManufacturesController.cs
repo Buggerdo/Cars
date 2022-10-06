@@ -133,5 +133,22 @@ namespace Cars.Controllers
             _Db.SaveChanges();
             return m;
         }
+
+        [HttpPost("copyCar")]
+        public Car CopyCar(int id)
+        {
+            Car car = _Db.Cars.FirstOrDefault(Car => Car.Id == id);
+            Car newCar = new()
+            {
+                Model = car.Model,
+                Vin = car.Vin,
+                Horsepower = car.Horsepower,
+                Type = car.Type,
+                MakeId = car.MakeId
+            };
+            _Db.Cars.Add(newCar);
+            _Db.SaveChanges();
+            return newCar;
+        }
     }
 }

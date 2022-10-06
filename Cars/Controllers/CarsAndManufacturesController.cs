@@ -9,7 +9,6 @@ namespace Cars.Controllers
     {
         CarsAndManufacturesContext _Db = new CarsAndManufacturesContext();
 
-
         [HttpPost("addManufacture")]
         public Manufacture AddManufacture(string company, string country)
         {

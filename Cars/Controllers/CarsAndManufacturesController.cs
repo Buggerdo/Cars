@@ -14,32 +14,20 @@ namespace Cars.Controllers
         [HttpPost("addManufacture")]
         public Manufacture AddManufacture(string company, string country)
         {
-            Manufacture _ = new()
+            Manufacture m = new()
             {
                 Company = company,
                 Country = country
             };
-            _Db.Manufactures.Add(_);
+            _Db.Manufactures.Add(m);
             _Db.SaveChanges();
-            return _;
+            return m;
         }
 
-        [HttpGet("id")]
-        public Manufacture GetManufactureById(int id)
-        {
-            return _Db.Manufactures.FirstOrDefault(Manufacture => Manufacture.Id == id);
-        }
-
-
-
-
-
-
-        
         [HttpPost("addCar")]
         public Car AddCar(string model, string vin, string horsepower, string type, int makeId)
         {
-            Car _ = new()
+            Car car = new()
             {
                 Model = model,
                 Vin = vin,
@@ -47,16 +35,71 @@ namespace Cars.Controllers
                 Type = type,
                 MakeId = makeId
             };
-            _Db.Cars.Add(_);
+            _Db.Cars.Add(car);
             _Db.SaveChanges();
-            return _;
+            return car;
         }
 
-        [HttpGet("id")]
+        [HttpGet("getManufactures")]
+        public IActionResult GetManufactures()
+        {
+            return Ok(_Db.Manufactures);
+        }
+
+        [HttpGet("getCars")]
+        public IActionResult GetCars()
+        {
+            return Ok(_Db.Cars);
+        }
+
+        [HttpGet("manufactureId")]
+        public Manufacture GetManufactureById(int id)
+        {
+            return _Db.Manufactures.FirstOrDefault(Manufacture => Manufacture.Id == id);
+        }
+
+
+        [HttpGet("carId")]
         public Car GetCarById(int id)
         {
             return _Db.Cars.FirstOrDefault(Car => Car.Id == id);
         }
 
+        [HttpPut("updateManufacture")]
+        public Manufacture UpdateManufacture(int id, string company, string country)
+        {
+            Manufacture m = _Db.Manufactures.FirstOrDefault(Manufacture => Manufacture.Id == id);
+            m.Company = company;
+            m.Country = country;
+            _Db.SaveChanges();
+            return m;
+        }
+
+        [HttpPut("updateCar")]
+        public Car UpdateCar(int id, string model, string vin, string horsepower, string type, int makeId)
+        {
+            Car car = _Db.Cars.FirstOrDefault(Car => Car.Id == id);
+            car.Model = model;
+            car.Vin = vin;
+            car.Horsepower = horsepower;
+            car.Type = type;
+            car.MakeId = makeId;
+            _Db.SaveChanges();
+            return car;
+        }
+
+        [HttpDelete("deleteManufacture")]
+        public void DeleteManufacture(int id)
+        {
+            _Db.Manufactures.Remove(_Db.Manufactures.FirstOrDefault(Manufacture => Manufacture.Id == id));
+            _Db.SaveChanges();
+        }
+
+        [HttpDelete("deleteCar")]
+        public void DeleteCar(int id)
+        {
+            _Db.Cars.Remove(_Db.Cars.FirstOrDefault(Car => Car.Id == id));
+            _Db.SaveChanges();
+        }
     }
 }

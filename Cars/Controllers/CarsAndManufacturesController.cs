@@ -1,6 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Cars.Models;
 using Microsoft.AspNetCore.Mvc;
-using Cars.Models;
 
 namespace Cars.Controllers
 {
@@ -38,6 +37,23 @@ namespace Cars.Controllers
             _Db.Cars.Add(car);
             _Db.SaveChanges();
             return car;
+        }
+
+        [HttpPost("copyCar")]
+        public Car CopyCar(int id)
+        {
+            Car car = _Db.Cars.FirstOrDefault(Car => Car.Id == id);
+            Car newCar = new()
+            {
+                Model = car.Model,
+                Vin = car.Vin,
+                Horsepower = car.Horsepower,
+                Type = car.Type,
+                MakeId = car.MakeId
+            };
+            _Db.Cars.Add(newCar);
+            _Db.SaveChanges();
+            return newCar;
         }
 
         [HttpGet("getManufactures")]
@@ -132,23 +148,6 @@ namespace Cars.Controllers
             m.Country = country;
             _Db.SaveChanges();
             return m;
-        }
-
-        [HttpPost("copyCar")]
-        public Car CopyCar(int id)
-        {
-            Car car = _Db.Cars.FirstOrDefault(Car => Car.Id == id);
-            Car newCar = new()
-            {
-                Model = car.Model,
-                Vin = car.Vin,
-                Horsepower = car.Horsepower,
-                Type = car.Type,
-                MakeId = car.MakeId
-            };
-            _Db.Cars.Add(newCar);
-            _Db.SaveChanges();
-            return newCar;
         }
     }
 }
